@@ -21,7 +21,7 @@ def add_text_and_count(text, counter):
     return get_last_text_and_count()
 
 
-def get_text_and_cunt():
+def get_text_and_count():
     """Получить все объекты."""
     query = select(TextAndCount)
     with db.session() as s:
