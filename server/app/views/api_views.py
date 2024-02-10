@@ -35,4 +35,4 @@ def counters():
         text=res["text"],
         counter=res["counter"],
     )
-    return text_and_count_schema.jsonify(*text_and_count), HTTPStatus.CREATED
+    return text_and_count_schema.jsonify(text_and_count), HTTPStatus.CREATED
