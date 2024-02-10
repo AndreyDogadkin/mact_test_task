@@ -3,8 +3,8 @@ from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
-from app.models.base import BaseModel
 from .config import AppConfig
+from .models.base import BaseModel
 
 db = SQLAlchemy(model_class=BaseModel)
 migrate = Migrate()
