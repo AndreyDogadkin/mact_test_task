@@ -1,9 +1,12 @@
 class AppConfig:
     """Конфиг клиент приложения."""
 
-    BASE_URL = "127.0.0.1:5000/"
-    COUNTERS_API = "api/counters/"
+    BASE_URL = "http://127.0.0.1:5000/"
+    COUNTERS_ENDPOINT = "api/counters/"
 
     @property
-    def counters_endpoint(self):
-        return self.BASE_URL + self.COUNTERS_API
+    def counters_url(self) -> str:
+        return self.BASE_URL + self.COUNTERS_ENDPOINT
+
+
+config = AppConfig()
