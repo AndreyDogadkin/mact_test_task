@@ -1,3 +1,4 @@
+from datetime import datetime
 from http import HTTPStatus
 
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
@@ -23,3 +24,9 @@ def response_to_list_view(
                 QStandardItem(response),
             ]
         )
+
+
+def get_local_date_and_time():
+    """Получить локальные дату и время."""
+    now = datetime.now()
+    return str(now.date()), str(now.time())
