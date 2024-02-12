@@ -21,7 +21,7 @@ class AppMainWindow(QMainWindow):
         self.get_model = QStandardItemModel()
         self.ui.post_list_view.setModel(self.post_model)
         self.ui.get_list_view.setModel(self.get_model)
-        self.session_counter = 1
+        self.session_post_counter = 1
 
     def on_click_post(self):
         """
@@ -32,10 +32,10 @@ class AppMainWindow(QMainWindow):
         self.post_model.clear()
         text = self.ui.post_line_edit.text()
         response = to_server_requests.post_counter(
-            text=text, counter=self.session_counter
+            text=text, counter=self.session_post_counter
         )
         response_to_list_view(response, self.post_model)
-        self.session_counter += 1
+        self.session_post_counter += 1
         self.ui.post_line_edit.setText("")
 
     def on_click_get(self):
