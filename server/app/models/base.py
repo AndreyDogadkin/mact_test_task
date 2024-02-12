@@ -9,7 +9,7 @@ class BaseModel(DeclarativeBase):
 
     __abstract__ = True
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    date_added: Mapped[datetime] = mapped_column(
+    date_time_added_utc: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.utcnow(),
     )
