@@ -1,15 +1,15 @@
 from http import HTTPStatus
 
 import requests
-from pydantic import ValidationError
-
 from app.base.exceptions import ForUserException
 from app.base.helpers import get_local_date_and_time
-from app.config import config
 from app.response_schemas.response_text_count import (
     TextAndCountSchema,
     TextAndCountListSchema,
 )
+from pydantic import ValidationError
+
+from app.config import config
 
 
 class ToServerRequests:
@@ -32,7 +32,7 @@ class ToServerRequests:
     @classmethod
     def get_counters(cls) -> tuple[TextAndCountListSchema | None, int]:
         """Запрос на получение всех объектов."""
-        response = requests.get(config.counters_url)
+        response = requests.get(cls.CONFIG.counters_url)
         status_code = response.status_code
         if status_code != HTTPStatus.OK:
             return None, status_code
@@ -47,7 +47,7 @@ class ToServerRequests:
     def post_counter(cls, **kwargs) -> tuple[TextAndCountSchema | None, int]:
         """Запрос на добавление объекта."""
         kwargs["local_date"], kwargs["local_time"] = get_local_date_and_time()
-        response = requests.post(url=config.counters_url, json=kwargs)
+        response = requests.post(url=cls.CONFIG.counters_url, json=kwargs)
         status_code = response.status_code
         if status_code != HTTPStatus.CREATED:
             return None, status_code
