@@ -3,9 +3,28 @@ from http import HTTPStatus
 
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 
+from app.response_schemas.response_text_count import (
+    TextAndCountListSchema,
+    TextAndCountSchema,
+)
+
+
+def format_response(response_data):
+    """Отформатировать ответ для в шаблон для вывода."""
+    row = (
+        f"Идентификатор: {response_data.id}\n"
+        f"Текст: {response_data.text}\n"
+        f"Нажатий за сессию: {response_data.counter}\n"
+        f"Локальная дата: {response_data.local_date}\n"
+        f"Локальное время: {response_data.local_time}\n"
+        f"Дата добавления в БД UTC: {response_data.date_time_added_utc}\n"
+    )
+    return row
+
 
 def response_to_list_view(
-        response: tuple[str | None, int],
+        response: tuple[
+            TextAndCountListSchema | TextAndCountSchema | None, int],
         q_model: QStandardItemModel,
 ):
     """Обработка полученного ответа."""
@@ -17,13 +36,15 @@ def response_to_list_view(
                 f"Ошибка при выполнении запроса. Статус: {status_code}"
             ),
         )
-    else:
-        q_model.appendColumn(
-            [
-                QStandardItem(f"Статус: {status_code} \n"),
-                QStandardItem(response),
-            ]
-        )
+    elif isinstance(response, TextAndCountSchema):
+        q_model.appendRow(QStandardItem(f"Статус ответа: {status_code}.\n"))
+        row = format_response(response)
+        q_model.appendRow(QStandardItem(row))
+    elif isinstance(response, TextAndCountListSchema):
+        q_model.appendRow(QStandardItem(f"Статус ответа: {status_code}.\n"))
+        for item in response.data:
+            row = format_response(item)
+            q_model.appendRow(QStandardItem(row))
 
 
 def get_local_date_and_time():
