@@ -23,8 +23,8 @@ def counters():
         - POST -- data: {
                     "text": <str>,
                     "counter": <int>,
-                    "local_time": <time>,
-                    "local_date": <date>
+                    "local_time": <str, %H:%M:%S>,
+                    "local_date": <str, %Y-%m-%d>
                   }
     """
     if request.method == "GET":
@@ -39,5 +39,7 @@ def counters():
         model=TextAndCount,
         text=res["text"],
         counter=res["counter"],
+        local_date=res["local_date"],
+        local_time=res["local_time"],
     )
     return text_and_count_schema.jsonify(text_and_count), HTTPStatus.CREATED
