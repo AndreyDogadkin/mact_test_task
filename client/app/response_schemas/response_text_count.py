@@ -2,6 +2,8 @@ from pydantic import BaseModel
 
 
 class TextAndCountSchema(BaseModel):
+    """Схема для валидации объекта TextAndCount."""
+
     id: int
     counter: int
     text: str
@@ -11,4 +13,6 @@ class TextAndCountSchema(BaseModel):
 
 
 class TextAndCountListSchema(BaseModel):
+    """Схема для валидации массива объектов TextAndCount."""
+
     data: list[TextAndCountSchema]
