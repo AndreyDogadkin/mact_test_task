@@ -1,6 +1,7 @@
-from PyQt6.QtGui import QStandardItemModel
+from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from PyQt6.QtWidgets import QMainWindow
 
+from app.base.exceptions import ForUserException
 from app.base.helpers import response_to_list_view
 from app.base.main_ui import Ui_MainWindow
 from app.core.services import ToServerRequests
@@ -27,23 +28,30 @@ class AppMainWindow(QMainWindow):
         """
         Нажатие на кнопку "POST".
         - Отправить запрос на добавление объекта
-        - Вывести добавленный объект.
+        - Вывести добавленный объект
         """
         self.post_model.clear()
         text = self.ui.post_line_edit.text()
-        response = to_server_requests.post_counter(
-            text=text, counter=self.session_post_counter
-        )
-        response_to_list_view(response, self.post_model)
-        self.session_post_counter += 1
-        self.ui.post_line_edit.setText("")
+        try:
+            response = to_server_requests.post_counter(
+                text=text, counter=self.session_post_counter
+            )
+            response_to_list_view(response, self.post_model)
+            self.session_post_counter += 1
+        except ForUserException as e:
+            self.post_model.appendRow(QStandardItem(e.message))
+        finally:
+            self.ui.post_line_edit.setText("")
 
     def on_click_get(self):
         """
         Нажатие на кнопку "GET".
         - Отправить запрос получение всех объектов
-        - Вывести все полученные объекты.
+        - Вывести все полученные объекты
         """
         self.get_model.clear()
-        response = to_server_requests.get_counters()
-        response_to_list_view(response, self.get_model)
+        try:
+            response = to_server_requests.get_counters()
+            response_to_list_view(response, self.get_model)
+        except ForUserException as e:
+            self.get_model.appendRow(QStandardItem(e.message))
