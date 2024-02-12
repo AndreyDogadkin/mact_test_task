@@ -4,9 +4,10 @@ from datetime import datetime
 import pytest
 
 
-def test_get_counters(client, app_with_data):
+def test_can_get_counters(client, app_with_data):
     response = client.get("/api/counters/")
     assert response.status_code == http.HTTPStatus.OK
+    assert len(response.json) == 1
     assert response.json[0]["text"] == "Testing text"
     assert response.json[0]["counter"] == 1
 
@@ -20,7 +21,7 @@ def test_get_counters(client, app_with_data):
         ("👀", 4, str(datetime.now().date()), str(datetime.now().time())),
     ],
 )
-def test_post_with_required_fields(
+def test_can_post_with_required_fields(
         client,
         text,
         counter,
@@ -48,10 +49,10 @@ def test_cannot_post_counter_without_data(client):
 @pytest.mark.parametrize(
     "text, counter, local_date, local_time",
     [
-        ("text1", 1, None, str(datetime.now().time())),
-        ("text2", 2, str(datetime.now().date()), None),
-        (None, 3, str(datetime.now().date()), str(datetime.now().time())),
+        (None, 1, str(datetime.now().date()), str(datetime.now().time())),
         ("121", None, str(datetime.now().date()), str(datetime.now().time())),
+        ("text1", 2, None, str(datetime.now().time())),
+        ("text2", 3, str(datetime.now().date()), None),
     ],
 )
 def test_cannot_post_counter_without_required_fields(
