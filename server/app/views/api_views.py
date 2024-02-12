@@ -1,12 +1,12 @@
 from http import HTTPStatus
 
 import marshmallow
-from app.core.services.db_methods import DBMethods
-from app.models.text_and_count import TextAndCount
-from app.schemas.text_and_count import TextAndCountSchema
 from flask import request, jsonify
 
 from app import app
+from app.core.services.db_methods import DBMethods
+from app.models.text_and_count import TextAndCount
+from app.schemas.text_and_count import TextAndCountSchema
 
 texts_and_counts_schema = TextAndCountSchema(many=True)
 text_and_count_schema = TextAndCountSchema()
@@ -31,6 +31,11 @@ def counters():
         posts = database.get_list_objs(model=TextAndCount)
         posts = texts_and_counts_schema.jsonify(posts)
         return posts, HTTPStatus.OK
+    if not request.data:
+        return (
+            jsonify({"error": "JSON data is missing."}),
+            HTTPStatus.BAD_REQUEST,
+        )
     try:
         res = text_and_count_schema.load(request.get_json())
     except marshmallow.ValidationError as e:
