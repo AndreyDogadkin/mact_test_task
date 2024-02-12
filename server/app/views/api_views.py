@@ -1,12 +1,12 @@
 from http import HTTPStatus
 
 import marshmallow
-from flask import request, jsonify
-
-from app import app
 from app.core.services.db_methods import DBMethods
 from app.models.text_and_count import TextAndCount
 from app.schemas.text_and_count import TextAndCountSchema
+from flask import request, jsonify
+
+from app import app
 
 texts_and_counts_schema = TextAndCountSchema(many=True)
 text_and_count_schema = TextAndCountSchema()
@@ -20,7 +20,12 @@ def counters():
     Представление объектов TextAndCount.
     Разрешенные методы:
         - GET
-        - POST -- data: {"text": <str>, "counter": <int>}
+        - POST -- data: {
+                    "text": <str>,
+                    "counter": <int>,
+                    "local_time": <time>,
+                    "local_date": <date>
+                  }
     """
     if request.method == "GET":
         posts = database.get_list_objs(model=TextAndCount)
