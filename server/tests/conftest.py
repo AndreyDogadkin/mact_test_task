@@ -2,9 +2,9 @@ import datetime
 import os
 
 import pytest
+from app.models.text_and_count import TextAndCount
 
 from app import app as flask_app, db
-from app.models.text_and_count import TextAndCount
 
 
 @pytest.fixture(scope="session")
@@ -15,7 +15,7 @@ def app():
     yield flask_app
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def app_with_data(app):
     post = TextAndCount()
     post.text = "Testing text"
