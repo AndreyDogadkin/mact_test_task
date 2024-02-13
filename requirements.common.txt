@@ -9,6 +9,7 @@ marshmallow-sqlalchemy==1.0.0
 PyQt6==6.6.1
 requests==2.31.0
 pydantic==2.6.1
+pytest-qt==4.4.0
 
 # common
 pyinstaller==6.3.0
